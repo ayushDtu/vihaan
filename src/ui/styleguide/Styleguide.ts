@@ -1,4 +1,6 @@
 export enum Colors {
   red = "#B91C1C",
-  primary = "#2563EB",
+  primary = "#171923",
+  primaryText = "#fff",
+  secondary = "#000",
 }

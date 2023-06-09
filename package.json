@@ -3,22 +3,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "android": "TAMAGUI_TARGET=native expo start --android",
-    "ios": "TAMAGUI_TARGET=native expo start --ios",
-    "web": "TAMAGUI_TARGET=web expo start --web -c",
-    "lint": "tsc --noEmit && eslint . --max-warnings=0 --ext .ts,.tsx"
+    "start": "expo start -c",
+    "lint": "tsc --noEmit && eslint . --max-warnings=0 --ext .ts,.tsx",
+    "e": "expo customize:web"
   },
   "dependencies": {
     "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
     "@expo/webpack-config": "^18.0.1",
+    "@react-native-async-storage/async-storage": "1.17.11",
     "@react-native-community/datetimepicker": "6.7.3",
-    "@tamagui/animations-react-native": "^1.31.2",
-    "@tamagui/babel-plugin": "^1.31.2",
-    "@tamagui/config": "^1.31.2",
-    "@tamagui/font-inter": "^1.31.2",
-    "@tamagui/theme-base": "^1.31.2",
-    "babel-plugin-transform-inline-environment-variables": "^0.4.4",
-    "expo": "~48.0.18",
+    "expo": "~49",
     "expo-constants": "~14.2.1",
     "expo-font": "^11.1.1",
     "expo-image": "~1.0.1",
@@ -36,9 +30,7 @@
     "react-native-safe-area-context": "4.5.0",
     "react-native-screens": "~3.20.0",
     "react-native-web": "~0.18.10",
-    "tamagui": "^1.31.2",
-    "zustand": "^4.3.8",
-    "@react-native-async-storage/async-storage": "1.17.11"
+    "zustand": "^4.3.8"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -6,14 +6,16 @@ import {
   Platform,
   Pressable,
   Text,
+  TouchableOpacity,
   View,
   useWindowDimensions,
 } from "react-native";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
-import { H6, XStack } from "tamagui";
 
 import { paths } from "../../domain/paths";
 import { useEvents } from "../../domain/useEvents";
+import { TextView } from "../components/TextView";
+import { Colors } from "../styleguide/Styleguide";
 
 export default () => {
   const { width, height } = useWindowDimensions();
@@ -50,14 +52,6 @@ export default () => {
                 flex: 1,
               }}
             >
-              {/* <View
-                style={{
-                  justifyContent: "center",
-                  backgroundColor: "#2D3748",
-                  alignSelf: "center",
-                  borderRadius: 8,
-                }}
-              > */}
               <Image
                 style={{
                   width: width * maxWidth,
@@ -68,7 +62,6 @@ export default () => {
                 source={item.image}
                 contentFit="cover"
               />
-              {/* </View> */}
               <Text
                 style={{
                   textAlign: "center",
@@ -95,36 +88,44 @@ export default () => {
           </Pressable>
         )}
       />
-      <XStack alignSelf="center" alignItems="center">
-        <Icons.Button
-          name="chevron-left"
-          backgroundColor="transparent"
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          alignSelf: "center",
+        }}
+      >
+        <TouchableOpacity
           onPress={() => {
             ref.current?.prev();
             setIndex(index - 1 >= 0 ? index - 1 : items.length - 1);
           }}
-        />
-        <H6>
-          {index + 1} / {items.length / windowSize}
-        </H6>
-        {/* <View style={{ width: 20 }} /> */}
-        <Icons.Button
-          name="chevron-right"
-          backgroundColor="transparent"
+          style={{ padding: 12 }}
+        >
+          <Icons
+            backgroundColor="transparent"
+            name="chevron-left"
+            size={24}
+            color={Colors.primaryText}
+          />
+        </TouchableOpacity>
+        <TextView text={`${index + 1} / ${items.length}`} />
+        <TouchableOpacity
           onPress={() => {
             ref.current?.next();
-            setIndex((index + 1) % items.length);
+            setIndex(index - 1 >= 0 ? index - 1 : items.length - 1);
           }}
-        />
-      </XStack>
+          style={{ padding: 12 }}
+        >
+          <Icons
+            backgroundColor="transparent"
+            name="chevron-right"
+            size={24}
+            color={Colors.primaryText}
+          />
+        </TouchableOpacity>
+      </View>
     </View>
-    // <YStack f={1} jc="center" ai="center" backgroundColor="$backgroundSoft">
-    //   <Paragraph color="$color" jc="center">
-    //     blabla2
-    //   </Paragraph>
-    //   <Text>elo</Text>
-    //   <StatusBar style="auto" />
-    // </YStack>
   );
 };
 
