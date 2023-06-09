@@ -1,32 +1,29 @@
-import { useFonts } from 'expo-font'
-import { StatusBar } from 'expo-status-bar'
-import { useColorScheme } from 'react-native'
-import { Paragraph, Spacer, TamaguiProvider, Theme, YStack } from 'tamagui'
+import { useFonts } from "expo-font";
+import { StatusBar } from "expo-status-bar";
+import { Paragraph, TamaguiProvider, Theme, YStack } from "tamagui";
 
-import config from './tamagui.config'
+import config from "./tamagui.config";
 
 export default function App() {
-  const colorScheme = useColorScheme()
-
   const [loaded] = useFonts({
-    Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
-    InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
-  })
+    Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
+    InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
+  });
 
   if (!loaded) {
-    return null
+    return null;
   }
 
   return (
     <TamaguiProvider config={config}>
-      <Theme name={colorScheme === 'dark' ? 'dark' : 'light'}>
-        <YStack f={1} jc="center" ai="center" backgroundColor={'$backgroundSoft'}>
+      <Theme name="dark">
+        <YStack f={1} jc="center" ai="center" backgroundColor="$backgroundSoft">
           <Paragraph color="$color" jc="center">
-            {colorScheme}
+            blabla
           </Paragraph>
           <StatusBar style="auto" />
         </YStack>
       </Theme>
     </TamaguiProvider>
-  )
+  );
 }
