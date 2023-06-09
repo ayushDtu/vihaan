@@ -1,40 +1,99 @@
 import Icons from "@expo/vector-icons/MaterialIcons";
+import { Image } from "expo-image";
+import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useRef, useState } from "react";
-import { Text, View, useWindowDimensions } from "react-native";
+import {
+  Platform,
+  Pressable,
+  Text,
+  View,
+  useWindowDimensions,
+} from "react-native";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 import { YStack, Paragraph, Button, XStack, H6 } from "tamagui";
 
+import { paths } from "../src/domain/paths";
+import { useEvents } from "../src/domain/useEvents";
+
 export default () => {
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
   const ref = useRef<ICarouselInstance>(null);
-  const items = [...new Array(6).keys()];
+  const { events: items } = useEvents();
+  const router = useRouter();
   const [index, setIndex] = useState(0);
   const windowSize = 1;
   return (
     <View>
       <Carousel
         ref={ref}
-        //   loop
         width={width}
-        height={width / 2}
-        //   autoPlay
+        height={height / 2}
         windowSize={windowSize}
         data={items}
         scrollAnimationDuration={1000}
+        mode="parallax"
+        enabled={Platform.OS !== "web"}
         onSnapToItem={setIndex}
-        renderItem={({ index }) => (
-          <View
-            style={{
-              //   flex: 1,
-              //   borderWidth: 1,
-              justifyContent: "center",
+        renderItem={({ index, item }) => (
+          <Pressable
+            style={{ flex: 1 }}
+            onPress={() => {
+              router.push(paths.event(item.id));
             }}
           >
-            <Text style={{ textAlign: "center", fontSize: 30, color: "#fff" }}>
-              {index + 1}
-            </Text>
-          </View>
+            <View
+              style={{
+                justifyContent: "center",
+                backgroundColor: "#2D3748",
+                alignSelf: "center",
+                borderRadius: 8,
+                flex: 1,
+              }}
+            >
+              {/* <View
+                style={{
+                  justifyContent: "center",
+                  backgroundColor: "#2D3748",
+                  alignSelf: "center",
+                  borderRadius: 8,
+                }}
+              > */}
+              <Image
+                style={{
+                  width: width * maxWidth,
+                  height: 400,
+                  overflow: "hidden",
+                }}
+                contentPosition="top center"
+                source={item.image}
+                contentFit="cover"
+              />
+              {/* </View> */}
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 30,
+                  maxWidth: width * maxWidth,
+                  color: "#fff",
+                  backgroundColor: "#000",
+                }}
+              >
+                {item.title}
+              </Text>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 24,
+                  maxWidth: width * maxWidth,
+                  color: "#999",
+                  backgroundColor: "#000",
+                }}
+              >
+                {item.date}
+              </Text>
+            </View>
+          </Pressable>
         )}
       />
       <XStack alignSelf="center" alignItems="center">
@@ -69,3 +128,5 @@ export default () => {
     // </YStack>
   );
 };
+
+const maxWidth = 0.8;

@@ -1,5 +1,6 @@
 import Icons from "@expo/vector-icons/MaterialIcons";
 import { useFonts } from "expo-font";
+import { Image } from "expo-image";
 import { Slot, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
@@ -20,6 +21,7 @@ import {
   YStack,
 } from "tamagui";
 
+import { paths } from "../src/domain/paths";
 import config from "../tamagui.config";
 
 export default function App() {
@@ -51,7 +53,7 @@ export default function App() {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Button onPress={() => router.push("/")}>PolTicketeX</Button>
+            <Button onPress={() => router.push(paths.root)}>PolTicketeX</Button>
             {Platform.OS === "web" ? (
               <Demo
                 placement="bottom"
@@ -189,9 +191,4 @@ export function Demo({
 const text = {
   upcomingEvents: "upcoming events",
   createEvent: "create event",
-};
-
-const paths = {
-  root: "/",
-  createEvent: "/create-event",
 };
