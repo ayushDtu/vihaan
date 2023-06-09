@@ -4,6 +4,7 @@ import { Slot, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { Platform, View } from "react-native";
+import { RootSiblingParent } from "react-native-root-siblings";
 import {
   SafeAreaProvider,
   useSafeAreaInsets,
@@ -38,88 +39,92 @@ export const RootLayout = () => {
   }
 
   return (
-    <SafeAreaProvider>
-      <TamaguiProvider config={config}>
-        <Theme name="dark">
-          <XStack
-            backgroundColor="#171923"
-            paddingBottom={
-              Platform.OS === "web" ? 8 : Platform.OS === "ios" ? 12 : 6
-            }
-            paddingTop={Platform.OS === "web" ? 6 : insets.top}
-            paddingLeft={12}
-            paddingRight={12}
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Button onPress={() => router.push(paths.root)}>PolTicketeX</Button>
-            {Platform.OS === "web" ? (
-              <Demo
-                placement="bottom"
-                Icon={<Icons name="menu" />}
-                Name="bottom-popover"
-              />
-            ) : (
-              <Icons.Button
-                backgroundColor="transparent"
-                name="menu"
-                onPress={() => {
-                  setOpen(true);
-                }}
-              />
-            )}
-          </XStack>
-          <View style={{ flex: 1, backgroundColor: "#000" }}>
-            <Slot />
-          </View>
-
-          <Sheet
-            open={open}
-            onOpenChange={setOpen}
-            snapPoints={[85, 50, 25]}
-            dismissOnSnapToBottom
-            zIndex={100_000}
-            animation="bouncy"
-          >
-            <Sheet.Overlay />
-            <Sheet.Handle />
-            <Sheet.Frame
-              flex={1}
-              padding="$4"
-              justifyContent="center"
+    <RootSiblingParent>
+      <SafeAreaProvider>
+        <TamaguiProvider config={config}>
+          <Theme name="dark">
+            <XStack
+              backgroundColor="#171923"
+              paddingBottom={
+                Platform.OS === "web" ? 8 : Platform.OS === "ios" ? 12 : 6
+              }
+              paddingTop={Platform.OS === "web" ? 6 : insets.top}
+              paddingLeft={12}
+              paddingRight={12}
+              justifyContent="space-between"
               alignItems="center"
-              space="$5"
             >
-              <Button
-                size="$6"
-                circular
-                icon={<Icons name="arrow-downward" />}
-                onPress={() => setOpen(false)}
-              />
-              <Button
-                onPress={() => {
-                  router.push(paths.root);
-                  setOpen(false);
-                }}
-                style={{ minWidth: 200, marginBottom: 8 }}
-              >
-                {text.upcomingEvents}
+              <Button onPress={() => router.push(paths.root)}>
+                PolTicketeX
               </Button>
-              <Button
-                onPress={() => {
-                  router.push(paths.createEvent);
-                  setOpen(false);
-                }}
-                style={{ minWidth: 200, marginBottom: 8 }}
+              {Platform.OS === "web" ? (
+                <Demo
+                  placement="bottom"
+                  Icon={<Icons name="menu" />}
+                  Name="bottom-popover"
+                />
+              ) : (
+                <Icons.Button
+                  backgroundColor="transparent"
+                  name="menu"
+                  onPress={() => {
+                    setOpen(true);
+                  }}
+                />
+              )}
+            </XStack>
+            <View style={{ flex: 1, backgroundColor: "#000" }}>
+              <Slot />
+            </View>
+
+            <Sheet
+              open={open}
+              onOpenChange={setOpen}
+              snapPoints={[85, 50, 25]}
+              dismissOnSnapToBottom
+              zIndex={100_000}
+              animation="bouncy"
+            >
+              <Sheet.Overlay />
+              <Sheet.Handle />
+              <Sheet.Frame
+                flex={1}
+                padding="$4"
+                justifyContent="center"
+                alignItems="center"
+                space="$5"
               >
-                {text.createEvent}
-              </Button>
-            </Sheet.Frame>
-          </Sheet>
-        </Theme>
-      </TamaguiProvider>
-      <StatusBar style="light" />
-    </SafeAreaProvider>
+                <Button
+                  size="$6"
+                  circular
+                  icon={<Icons name="arrow-downward" />}
+                  onPress={() => setOpen(false)}
+                />
+                <Button
+                  onPress={() => {
+                    router.push(paths.root);
+                    setOpen(false);
+                  }}
+                  style={{ minWidth: 200, marginBottom: 8 }}
+                >
+                  {text.upcomingEvents}
+                </Button>
+                <Button
+                  onPress={() => {
+                    router.push(paths.createEvent);
+                    setOpen(false);
+                  }}
+                  style={{ minWidth: 200, marginBottom: 8 }}
+                >
+                  {text.createEvent}
+                </Button>
+              </Sheet.Frame>
+            </Sheet>
+          </Theme>
+        </TamaguiProvider>
+        <StatusBar style="light" />
+      </SafeAreaProvider>
+    </RootSiblingParent>
   );
 };
 
