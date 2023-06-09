@@ -36,7 +36,7 @@ export default () => {
         onSnapToItem={setIndex}
         renderItem={({ index, item }) => (
           <Pressable
-            style={{ flex: 1 }}
+            style={{ flex: 1, width }}
             onPress={() => {
               router.push(paths.event(item.id));
             }}
@@ -61,7 +61,7 @@ export default () => {
               <Image
                 style={{
                   width: width * maxWidth,
-                  height: 400,
+                  height: 270,
                   overflow: "hidden",
                 }}
                 contentPosition="top center"

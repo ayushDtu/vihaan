@@ -2,7 +2,7 @@ import Icons from "@expo/vector-icons/MaterialIcons";
 import { useFonts } from "expo-font";
 import { Slot, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Platform, View } from "react-native";
 import { RootSiblingParent } from "react-native-root-siblings";
 import {
@@ -12,17 +12,27 @@ import {
 import {
   Adapt,
   Button,
+  Dialog,
+  Input,
+  Label,
   Popover,
   PopoverProps,
   Sheet,
   TamaguiProvider,
   Theme,
+  Unspaced,
   XStack,
   YStack,
 } from "tamagui";
 
 import config from "../../../tamagui.config";
 import { paths } from "../../domain/paths";
+import {
+  setTokenSelector,
+  tokenSelector,
+  useHydration,
+  useStore,
+} from "../../domain/store";
 
 export const RootLayout = () => {
   const [loaded] = useFonts({
@@ -30,11 +40,14 @@ export const RootLayout = () => {
     InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
   });
 
+  const storeHydrated = useHydration();
+
   const insets = useSafeAreaInsets();
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const token = useStore(tokenSelector);
 
-  if (!loaded) {
+  if (!loaded || !storeHydrated) {
     return null;
   }
 
@@ -57,21 +70,25 @@ export const RootLayout = () => {
               <Button onPress={() => router.push(paths.root)}>
                 PolTicketeX
               </Button>
-              {Platform.OS === "web" ? (
-                <Demo
-                  placement="bottom"
-                  Icon={<Icons name="menu" />}
-                  Name="bottom-popover"
-                />
-              ) : (
-                <Icons.Button
-                  backgroundColor="transparent"
-                  name="menu"
-                  onPress={() => {
-                    setOpen(true);
-                  }}
-                />
-              )}
+              <XStack>
+                <DialogInstance />
+                <View style={{ width: 12 }} />
+                {Platform.OS === "web" ? (
+                  <Demo
+                    placement="bottom"
+                    Icon={<Icons name="menu" />}
+                    Name="bottom-popover"
+                  />
+                ) : (
+                  <Icons.Button
+                    backgroundColor="transparent"
+                    name="menu"
+                    onPress={() => {
+                      setOpen(true);
+                    }}
+                  />
+                )}
+              </XStack>
             </XStack>
             <View style={{ flex: 1, backgroundColor: "#000" }}>
               <Slot />
@@ -109,15 +126,17 @@ export const RootLayout = () => {
                 >
                   {text.upcomingEvents}
                 </Button>
-                <Button
-                  onPress={() => {
-                    router.push(paths.createEvent);
-                    setOpen(false);
-                  }}
-                  style={{ minWidth: 200, marginBottom: 8 }}
-                >
-                  {text.createEvent}
-                </Button>
+                {token && (
+                  <Button
+                    onPress={() => {
+                      router.push(paths.createEvent);
+                      setOpen(false);
+                    }}
+                    style={{ minWidth: 200, marginBottom: 8 }}
+                  >
+                    {text.createEvent}
+                  </Button>
+                )}
               </Sheet.Frame>
             </Sheet>
           </Theme>
@@ -134,6 +153,7 @@ export function Demo({
   ...props
 }: PopoverProps & { Icon?: any; Name?: string }) {
   const router = useRouter();
+  const token = useStore(tokenSelector);
   return (
     <Popover size="$5" allowFlip {...props}>
       <Popover.Trigger asChild>
@@ -171,21 +191,24 @@ export function Demo({
         <YStack space="$3">
           <Popover.Close asChild>
             <Button
-              onPress={() => router.push(paths.root)}
-              size="$3"
+              onPress={() => {
+                router.push(paths.root);
+              }}
               style={{ minWidth: 200, marginBottom: 8 }}
             >
               {text.upcomingEvents}
             </Button>
           </Popover.Close>
-          <Popover.Close asChild>
-            <Button
-              onPress={() => router.push(paths.createEvent)}
-              style={{ minWidth: 200, marginBottom: 8 }}
-            >
-              {text.createEvent}
-            </Button>
-          </Popover.Close>
+          {token ? (
+            <Popover.Close asChild>
+              <Button
+                onPress={() => router.push(paths.createEvent)}
+                style={{ minWidth: 200, marginBottom: 8 }}
+              >
+                {text.createEvent}
+              </Button>
+            </Popover.Close>
+          ) : null}
         </YStack>
       </Popover.Content>
     </Popover>
@@ -195,4 +218,104 @@ export function Demo({
 const text = {
   upcomingEvents: "upcoming events",
   createEvent: "create event",
+  login: "login",
+  logout: "logout",
 };
+
+function DialogInstance() {
+  const [open, setOpen] = useState(false);
+  const setToken = useStore(setTokenSelector);
+  const token = useStore(tokenSelector);
+  return (
+    <Dialog
+      modal
+      onOpenChange={(open) => {
+        setOpen(open);
+      }}
+    >
+      <Dialog.Trigger asChild>
+        <Button>{token ? "logout" : "auth"}</Button>
+      </Dialog.Trigger>
+
+      <Dialog.Portal>
+        <Dialog.Overlay
+          key="overlay"
+          animation="quick"
+          opacity={0.5}
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
+
+        <Dialog.Content
+          bordered
+          elevate
+          key="content"
+          animation={[
+            "quick",
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+          minWidth={300}
+          enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
+          exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
+          space
+        >
+          <View style={{ height: 20 }} />
+          {!token ? (
+            <>
+              <Label>username</Label>
+              <Input />
+              <Label>password</Label>
+              <Input minWidth={100} secureTextEntry />
+            </>
+          ) : (
+            <Label>are you sure?</Label>
+          )}
+
+          <XStack alignSelf="flex-end" space>
+            {!token ? (
+              <Dialog.Close displayWhenAdapted asChild>
+                <Button
+                  onPress={() => {
+                    setToken("asdf");
+                  }}
+                  theme="alt1"
+                  aria-label="Close"
+                >
+                  create account
+                </Button>
+              </Dialog.Close>
+            ) : null}
+            <Dialog.Close displayWhenAdapted asChild>
+              <Button
+                onPress={() => {
+                  token ? setToken(undefined) : setToken("asdf");
+                }}
+                theme="alt1"
+                aria-label="Close"
+              >
+                {token ? "logout" : "login"}
+              </Button>
+            </Dialog.Close>
+          </XStack>
+
+          <Unspaced>
+            <Dialog.Close asChild>
+              <Button
+                position="absolute"
+                top="$3"
+                right="$3"
+                size="$2"
+                circular
+                icon={<Icons name="close" />}
+              />
+            </Dialog.Close>
+          </Unspaced>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog>
+  );
+}
