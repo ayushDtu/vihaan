@@ -25,13 +25,14 @@ import {
   useHydration,
   useStore,
 } from "../../domain/store";
+import { MenuIcon } from "../icons/MenuIcon";
 import { Colors } from "../styleguide/Styleguide";
 
 export const RootLayout = () => {
   const storeHydrated = useHydration();
 
   const [fontsLoaded] = useFonts({
-    Inter_800ExtraBold,
+    Inter_800ExtraBold: require("../../../assets/Inter-ExtraBold.ttf"),
   });
 
   const router = useRouter();
@@ -94,12 +95,13 @@ export const RootLayout = () => {
                       setNavigationModalOpen(true);
                     }}
                   >
-                    <Icons
+                    {/* <Icons
                       size={24}
                       color={Colors.primaryText}
                       backgroundColor="transparent"
                       name="menu"
-                    />
+                    /> */}
+                    <MenuIcon />
                   </TouchableOpacity>
                 </View>
               </View>
