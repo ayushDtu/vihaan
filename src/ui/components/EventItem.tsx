@@ -1,7 +1,8 @@
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
-import { Pressable, View, useWindowDimensions } from "react-native";
+import { Platform, Pressable, View, useWindowDimensions } from "react-native";
 
+import { ButtonView } from "./ButtonView";
 import { TextView } from "./TextView";
 import { Event } from "../../data/generated-api";
 import { paths } from "../../domain/paths";
@@ -61,6 +62,22 @@ export const EventItem = ({
           color={Colors.primary}
           maxWidth={width * maxWidth}
         />
+      </View>
+      <View style={{ flexDirection: "row" }}>
+        <ButtonView
+          onPress={() => {}}
+          textViewProps={{
+            text: "show qr",
+          }}
+        />
+        {Platform.OS !== "web" ? (
+          <ButtonView
+            onPress={() => {}}
+            textViewProps={{
+              text: "scan qr",
+            }}
+          />
+        ) : null}
       </View>
     </Pressable>
   );

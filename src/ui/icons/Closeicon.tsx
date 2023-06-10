@@ -4,7 +4,10 @@ import Svg, { Path, SvgProps } from "react-native-svg";
 export const CloseIcon = (props: SvgProps) => {
   return (
     <Svg height={24} viewBox="0 -960 960 960" width={24} {...props}>
-      <Path d="M256-200l-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224z" />
+      <Path
+        fill="#000"
+        d="M256-200l-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224z"
+      />
     </Svg>
   );
 };
