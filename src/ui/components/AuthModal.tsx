@@ -31,6 +31,7 @@ export const AuthModal = ({
 };
 
 const Content = ({ onClose }: { onClose: () => void }) => {
+  // todo remove
   const [username, setUsername] = useState("mateusz1@gmail.com");
   const [password, setPassword] = useState("admin1234");
   const setToken = useStore(setTokenSelector);
@@ -65,10 +66,13 @@ const Content = ({ onClose }: { onClose: () => void }) => {
       username: string;
       password: string;
     }) => {
+      // todo model?
       return api.account.creteAccountAccountPost({
         user_email: username,
         user_password: password,
         user_name: "tmp",
+        wallet_address: "",
+        wallet_private_key: "",
       });
     },
     onSuccess: (data) => {

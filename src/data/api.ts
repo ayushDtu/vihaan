@@ -1,7 +1,7 @@
 import { Api } from "./generated-api";
 import { useStore } from "../domain/store";
 
-export const baseURL = "https://ticketex6.fly.dev";
+export const baseURL = "https://web-production-c66c1.up.railway.app";
 
 export const api = new Api({
   baseURL,

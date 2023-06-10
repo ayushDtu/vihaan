@@ -63,22 +63,30 @@ export const EventItem = ({
           maxWidth={width * maxWidth}
         />
       </View>
-      <View style={{ flexDirection: "row" }}>
-        <ButtonView
-          onPress={() => {}}
-          textViewProps={{
-            text: "show qr",
-          }}
-        />
-        {Platform.OS !== "web" ? (
+      {!navEnabled ? (
+        <View style={{ flexDirection: "row", alignSelf: "center" }}>
           <ButtonView
-            onPress={() => {}}
+            onPress={() => {
+              // todo -> should be available if I have ticket
+              router.push(paths.showQr(item.contract_address));
+            }}
             textViewProps={{
-              text: "scan qr",
+              text: "show qr",
             }}
           />
-        ) : null}
-      </View>
+          {Platform.OS !== "web" ? (
+            <ButtonView
+              onPress={() => {
+                router.push(paths.scanQr(item.contract_address));
+              }}
+              textViewProps={{
+                text: "scan qr",
+              }}
+            />
+          ) : null}
+        </View>
+      ) : null}
+      {/* todo buy ticket */}
     </Pressable>
   );
 };

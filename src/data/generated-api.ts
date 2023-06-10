@@ -18,6 +18,18 @@ export interface BodyCreatePictureImagePost {
   second_art: File;
 }
 
+/** BuyTicket */
+export interface BuyTicket {
+  /** Jwt Token */
+  jwt_token: string;
+  /** Ticketquantity */
+  ticketQuantity: number;
+  /** Eventcontactaddress */
+  eventContactAddress: string;
+  /** Privatekey */
+  privateKey: string;
+}
+
 /** Event */
 export interface Event {
   /** Name */
@@ -60,6 +72,10 @@ export interface User {
   user_name: string;
   /** User Password */
   user_password: string;
+  /** Wallet Address */
+  wallet_address: string;
+  /** Wallet Private Key */
+  wallet_private_key: string;
 }
 
 /** ValidationError */
@@ -231,6 +247,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       ...params,
     });
 
+  ticket = {
+    /**
+     * No description
+     *
+     * @name BuyTicketTicketPost
+     * @summary Buy Ticket
+     * @request POST:/ticket
+     */
+    buyTicketTicketPost: (data: BuyTicket, params: RequestParams = {}) =>
+      this.request<string, HTTPValidationError>({
+        path: `/ticket`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+  };
   event = {
     /**
      * No description

@@ -163,6 +163,7 @@ export const CreateEvent = () => {
               return;
             }
 
+            // todo model?
             createEventMutation.mutate({
               description: "",
               event_image: uploadImageMutation.data as string,
