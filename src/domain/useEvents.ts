@@ -9,7 +9,16 @@ export const useEvents = () => {
     queryKey: queryKeys.events,
     queryFn: api.event.getEventEventGet,
   });
-  return { events: query.data ?? [], loading: query.isLoading };
+  return {
+    events:
+      query.data?.filter(
+        (e) =>
+          e.contract_address.length ===
+            "0xBa41daf1680b3afb20E9F474F57F31b9cbc6990a".length &&
+          e.event_image.startsWith("https://")
+      ) ?? [],
+    loading: query.isLoading,
+  };
 };
 
 export const useEvent = (id: EventID) => {

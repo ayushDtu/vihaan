@@ -1,11 +1,15 @@
+import { useMutation } from "@tanstack/react-query";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { Platform, Pressable, View, useWindowDimensions } from "react-native";
 
 import { ButtonView } from "./ButtonView";
 import { TextView } from "./TextView";
+import { showToast } from "./Toast";
+import { api } from "../../data/api";
 import { Event } from "../../data/generated-api";
 import { paths } from "../../domain/paths";
+import { tokenSelector, useStore } from "../../domain/store";
 import { Colors } from "../styleguide/Styleguide";
 
 export const EventItem = ({
@@ -17,6 +21,24 @@ export const EventItem = ({
 }) => {
   const { width } = useWindowDimensions();
   const router = useRouter();
+  const token = useStore(tokenSelector);
+
+  const buyTicketMutation = useMutation({
+    mutationFn: () =>
+      api.ticket.buyTicketTicketPost({
+        eventContactAddress: item.contract_address,
+        jwt_token: token!,
+        privateKey: "",
+        ticketQuantity: 1,
+      }),
+    onError: () => {
+      showToast("Something went wrong, try again");
+    },
+    onSuccess: () => {
+      showToast("Ticket bought");
+    },
+  });
+
   return (
     <Pressable
       style={{ flex: 1, width }}
@@ -86,7 +108,18 @@ export const EventItem = ({
           ) : null}
         </View>
       ) : null}
-      {/* todo buy ticket */}
+      {token ? (
+        <View style={{ alignSelf: "center" }}>
+          <View style={{ height: 16 }} />
+          <ButtonView
+            loading={buyTicketMutation.isLoading}
+            onPress={buyTicketMutation.mutate}
+            textViewProps={{
+              text: "buy ticket",
+            }}
+          />
+        </View>
+      ) : null}
     </Pressable>
   );
 };
