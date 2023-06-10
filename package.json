@@ -8,7 +8,7 @@
     "lint": "tsc --noEmit && eslint . --max-warnings=0 --ext .ts,.tsx",
     "generate:api": "npx swagger-typescript-api -p ./swagger.json -n ./src/data/generated-api.ts --axios --unwrap-response-data  --extract-request-params",
     "deploy": "gh-pages -d dist",
-    "predeploy": "expo export --platform web"
+    "predeploy": "PUBLIC_URL=https://ethprague23pl.github.io/front expo export --platform web"
   },
   "dependencies": {
     "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
