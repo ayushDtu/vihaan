@@ -1,5 +1,4 @@
-import Icons from "@expo/vector-icons/MaterialIcons";
-import { Inter_800ExtraBold, useFonts } from "@expo-google-fonts/inter";
+import { useFonts } from "@expo-google-fonts/inter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Slot, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -95,12 +94,6 @@ export const RootLayout = () => {
                       setNavigationModalOpen(true);
                     }}
                   >
-                    {/* <Icons
-                      size={24}
-                      color={Colors.primaryText}
-                      backgroundColor="transparent"
-                      name="menu"
-                    /> */}
                     <MenuIcon />
                   </TouchableOpacity>
                 </View>

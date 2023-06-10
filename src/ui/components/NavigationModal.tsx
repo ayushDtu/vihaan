@@ -1,4 +1,3 @@
-import Icons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
 import { View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -7,6 +6,7 @@ import { ButtonVariant, ButtonView } from "./ButtonView";
 import { ModalView } from "./Modal";
 import { paths } from "../../domain/paths";
 import { tokenSelector, useStore } from "../../domain/store";
+import { CloseIcon } from "../icons/Closeicon";
 import { Colors } from "../styleguide/Styleguide";
 
 export const NavigationModal = ({
@@ -47,12 +47,7 @@ const Content = ({ onClose }: { onClose: () => void }) => {
           onPress={onClose}
           style={{ padding: 12, paddingRight: 0 }}
         >
-          <Icons
-            backgroundColor="transparent"
-            name="close"
-            size={24}
-            color={Colors.secondary}
-          />
+          <CloseIcon />
         </TouchableOpacity>
       </View>
 

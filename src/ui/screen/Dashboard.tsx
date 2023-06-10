@@ -1,4 +1,3 @@
-import Icons from "@expo/vector-icons/MaterialIcons";
 import { useRef, useState } from "react";
 import {
   Platform,
@@ -11,7 +10,8 @@ import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 import { useEvents } from "../../domain/useEvents";
 import { EventItem } from "../components/EventItem";
 import { TextView } from "../components/TextView";
-import { Colors } from "../styleguide/Styleguide";
+import { ChevronLeft } from "../icons/ChevronLeft";
+import { ChevronRight } from "../icons/ChevronRight";
 
 export default () => {
   const { width, height } = useWindowDimensions();
@@ -51,12 +51,7 @@ export default () => {
             }}
             style={{ padding: 12 }}
           >
-            <Icons
-              backgroundColor="transparent"
-              name="chevron-left"
-              size={24}
-              color={Colors.primaryText}
-            />
+            <ChevronLeft />
           </TouchableOpacity>
         ) : null}
         <TextView text={`${index + 1} / ${events.length}`} />
@@ -68,12 +63,7 @@ export default () => {
             }}
             style={{ padding: 12 }}
           >
-            <Icons
-              backgroundColor="transparent"
-              name="chevron-right"
-              size={24}
-              color={Colors.primaryText}
-            />
+            <ChevronRight />
           </TouchableOpacity>
         ) : null}
       </View>

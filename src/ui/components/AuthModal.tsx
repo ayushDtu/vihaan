@@ -1,6 +1,5 @@
-import Icons from "@expo/vector-icons/MaterialIcons";
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
@@ -11,6 +10,7 @@ import { TextView } from "./TextView";
 import { showToast } from "./Toast";
 import { api } from "../../data/api";
 import { setTokenSelector, useStore } from "../../domain/store";
+import { CloseIcon } from "../icons/Closeicon";
 import { Colors } from "../styleguide/Styleguide";
 
 export const AuthModal = ({
@@ -94,12 +94,7 @@ const Content = ({ onClose }: { onClose: () => void }) => {
         }}
       >
         <TouchableOpacity onPress={onClose} style={{ padding: 12 }}>
-          <Icons
-            backgroundColor="transparent"
-            name="close"
-            size={24}
-            color={Colors.secondary}
-          />
+          <CloseIcon />
         </TouchableOpacity>
       </View>
 
