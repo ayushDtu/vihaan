@@ -1,5 +1,5 @@
 import Icons from "@expo/vector-icons/MaterialIcons";
-import { useFonts } from "expo-font";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Slot, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
@@ -28,6 +28,8 @@ import {
 } from "../../domain/store";
 import { Colors } from "../styleguide/Styleguide";
 
+const queryClient = new QueryClient();
+
 export const RootLayout = () => {
   const storeHydrated = useHydration();
 
@@ -47,69 +49,71 @@ export const RootLayout = () => {
 
   return (
     <RootSiblingParent>
-      <View
-        style={{
-          backgroundColor: Colors.primary,
-          flex: 1,
-        }}
-      >
-        <SafeAreaProvider>
-          <SafeAreaView>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: 12,
-                paddingTop: Platform.OS === "android" ? 24 : 12,
-                paddingBottom: Platform.OS === "android" ? 6 : 12,
-              }}
-            >
-              <ButtonView
-                onPress={() => router.push(paths.root)}
-                text="PolTicketeX"
-              />
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <QueryClientProvider client={queryClient}>
+        <View
+          style={{
+            backgroundColor: Colors.primary,
+            flex: 1,
+          }}
+        >
+          <SafeAreaProvider>
+            <SafeAreaView>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: 12,
+                  paddingTop: Platform.OS === "android" ? 24 : 12,
+                  paddingBottom: Platform.OS === "android" ? 6 : 12,
+                }}
+              >
                 <ButtonView
-                  onPress={() => {
-                    if (token) {
-                      setToken(undefined);
-                    } else {
-                      setAuthModalOpen(true);
-                    }
-                  }}
-                  text={token ? "logout" : "login"}
+                  onPress={() => router.push(paths.root)}
+                  text="PolTicketeX"
                 />
-                <View style={{ width: 12 }} />
-                <TouchableOpacity
-                  onPress={() => {
-                    setNavigationModalOpen(true);
-                  }}
-                >
-                  <Icons
-                    size={24}
-                    color={Colors.primaryText}
-                    backgroundColor="transparent"
-                    name="menu"
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <ButtonView
+                    onPress={() => {
+                      if (token) {
+                        setToken(undefined);
+                      } else {
+                        setAuthModalOpen(true);
+                      }
+                    }}
+                    text={token ? "logout" : "auth"}
                   />
-                </TouchableOpacity>
+                  <View style={{ width: 12 }} />
+                  <TouchableOpacity
+                    onPress={() => {
+                      setNavigationModalOpen(true);
+                    }}
+                  >
+                    <Icons
+                      size={24}
+                      color={Colors.primaryText}
+                      backgroundColor="transparent"
+                      name="menu"
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-            <View style={{ height, backgroundColor: Colors.secondary }}>
-              <Slot />
-            </View>
-          </SafeAreaView>
-          <NavigationModal
-            modalVisible={navigationModalOpen}
-            setModalVisible={setNavigationModalOpen}
-          />
-          <AuthModal
-            modalVisible={authModalOpen}
-            setModalVisible={setAuthModalOpen}
-          />
-          <StatusBar style="light" />
-        </SafeAreaProvider>
-      </View>
+              <View style={{ height, backgroundColor: Colors.secondary }}>
+                <Slot />
+              </View>
+            </SafeAreaView>
+            <NavigationModal
+              modalVisible={navigationModalOpen}
+              setModalVisible={setNavigationModalOpen}
+            />
+            <AuthModal
+              modalVisible={authModalOpen}
+              setModalVisible={setAuthModalOpen}
+            />
+            <StatusBar style="light" />
+          </SafeAreaProvider>
+        </View>
+      </QueryClientProvider>
     </RootSiblingParent>
   );
 };

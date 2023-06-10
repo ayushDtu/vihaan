@@ -5,14 +5,16 @@
   "scripts": {
     "start": "expo start -c",
     "lint": "tsc --noEmit && eslint . --max-warnings=0 --ext .ts,.tsx",
-    "e": "expo customize:web"
+    "generate:api": "npx swagger-typescript-api -p ./swagger.json -n ./src/data/generated-api.ts --axios --unwrap-response-data  --extract-request-params"
   },
   "dependencies": {
     "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
     "@expo/webpack-config": "^18.0.1",
     "@react-native-async-storage/async-storage": "1.17.11",
     "@react-native-community/datetimepicker": "6.7.3",
-    "expo": "~49",
+    "@tanstack/react-query": "^4.29.12",
+    "axios": "^1.4.0",
+    "expo": "^48.0.19",
     "expo-constants": "~14.2.1",
     "expo-font": "^11.1.1",
     "expo-image": "~1.0.1",

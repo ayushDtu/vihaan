@@ -4,7 +4,7 @@ import { Colors } from "../styleguide/Styleguide";
 
 export const showToast = (
   message: string,
-  variant: Variant,
+  variant: Variant = Variant.error,
   options?: ToastOptions
 ) => {
   Toast.show(message, {

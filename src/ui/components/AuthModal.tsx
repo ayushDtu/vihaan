@@ -1,4 +1,5 @@
 import Icons from "@expo/vector-icons/MaterialIcons";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -7,6 +8,8 @@ import { ButtonView } from "./ButtonView";
 import { Input } from "./Input";
 import { ModalView } from "./Modal";
 import { TextView } from "./TextView";
+import { showToast } from "./Toast";
+import { api } from "../../data/api";
 import { setTokenSelector, useStore } from "../../domain/store";
 import { Colors } from "../styleguide/Styleguide";
 
@@ -28,9 +31,54 @@ export const AuthModal = ({
 };
 
 const Content = ({ onClose }: { onClose: () => void }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("mateusz1@gmail.com");
+  const [password, setPassword] = useState("admin1234");
   const setToken = useStore(setTokenSelector);
+
+  const loginMutation = useMutation({
+    mutationFn: ({
+      username,
+      password,
+    }: {
+      username: string;
+      password: string;
+    }) => {
+      return api.login.logToAccountLoginPost({
+        user_email: username,
+        user_password: password,
+      });
+    },
+    onSuccess: (data) => {
+      setToken(data.accessToken);
+      onClose();
+    },
+    onError: () => {
+      showToast("Invalid credentials");
+    },
+  });
+
+  const signupMutation = useMutation({
+    mutationFn: ({
+      username,
+      password,
+    }: {
+      username: string;
+      password: string;
+    }) => {
+      return api.account.creteAccountAccountPost({
+        user_email: username,
+        user_password: password,
+        user_name: "tmp",
+      });
+    },
+    onSuccess: (data) => {
+      setToken(data.accessToken);
+      onClose();
+    },
+    onError: () => {
+      showToast("Invalid credentials");
+    },
+  });
 
   return (
     <View
@@ -75,17 +123,17 @@ const Content = ({ onClose }: { onClose: () => void }) => {
           <ButtonView
             color={Colors.secondary}
             text="login"
+            loading={loginMutation.isLoading}
             onPress={() => {
-              setToken("asdf");
-              onClose();
+              loginMutation.mutate({ username, password });
             }}
           />
           <ButtonView
             color={Colors.secondary}
             text="create account"
+            loading={signupMutation.isLoading}
             onPress={() => {
-              setToken("asdf");
-              onClose();
+              signupMutation.mutate({ username, password });
             }}
           />
         </View>

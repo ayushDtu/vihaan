@@ -3,6 +3,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
 import { View } from "react-native";
 
+import { api } from "../../data/api";
 import { useAuthGuard } from "../../domain/useAuthGuard";
 import { ButtonView } from "../components/ButtonView";
 import { Input } from "../components/Input";
@@ -29,6 +30,7 @@ export const CreateEvent = () => {
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
+    // api.image.createPictureImagePost
   };
 
   useAuthGuard();
