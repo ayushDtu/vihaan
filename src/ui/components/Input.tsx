@@ -24,8 +24,8 @@ export const Input = ({
         borderWidth: 1,
         borderColor: borderColor ?? color,
         borderRadius: 12,
-        padding: 4,
-        paddingHorizontal: 8,
+        padding: 6,
+        paddingHorizontal: 12,
         width: 300,
       }}
       secureTextEntry={secureTextEntry}

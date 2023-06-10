@@ -1,9 +1,11 @@
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
-import { Pressable, View, useWindowDimensions, Text } from "react-native";
+import { Pressable, View, useWindowDimensions } from "react-native";
 
+import { TextView } from "./TextView";
 import { Event } from "../../data/generated-api";
 import { paths } from "../../domain/paths";
+import { Colors } from "../styleguide/Styleguide";
 
 export const EventItem = ({
   item,
@@ -26,7 +28,6 @@ export const EventItem = ({
       <View
         style={{
           justifyContent: "center",
-          backgroundColor: "#2D3748",
           alignSelf: "center",
           borderRadius: 8,
           flex: 1,
@@ -43,28 +44,23 @@ export const EventItem = ({
           contentFit="cover"
           placeholder={blurhash}
         />
-        <Text
-          style={{
-            textAlign: "center",
-            fontSize: 30,
-            maxWidth: width * maxWidth,
-            color: "#fff",
-            backgroundColor: "#000",
-          }}
-        >
-          {item.name}
-        </Text>
-        <Text
-          style={{
-            textAlign: "center",
-            fontSize: 24,
-            maxWidth: width * maxWidth,
-            color: "#999",
-            backgroundColor: "#000",
-          }}
-        >
-          {item.start_day}
-        </Text>
+
+        <TextView
+          text={item.name}
+          textAlign="center"
+          fontSize={30}
+          backgroundColor={Colors.tertiary}
+          color={Colors.primary}
+          maxWidth={width * maxWidth}
+        />
+        <TextView
+          text={new Date(item.start_day).toLocaleDateString()}
+          textAlign="center"
+          fontSize={24}
+          backgroundColor={Colors.tertiary}
+          color={Colors.primary}
+          maxWidth={width * maxWidth}
+        />
       </View>
     </Pressable>
   );
