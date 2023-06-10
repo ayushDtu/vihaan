@@ -3,7 +3,7 @@ import { useRouter } from "expo-router";
 import { View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-import { ButtonView } from "./ButtonView";
+import { ButtonVariant, ButtonView } from "./ButtonView";
 import { ModalView } from "./Modal";
 import { paths } from "../../domain/paths";
 import { tokenSelector, useStore } from "../../domain/store";
@@ -35,6 +35,7 @@ const Content = ({ onClose }: { onClose: () => void }) => {
         minWidth: 200,
         minHeight: 200,
         paddingLeft: 16,
+        paddingRight: 16,
       }}
     >
       <View
@@ -42,7 +43,10 @@ const Content = ({ onClose }: { onClose: () => void }) => {
           alignSelf: "flex-end",
         }}
       >
-        <TouchableOpacity onPress={onClose} style={{ padding: 12 }}>
+        <TouchableOpacity
+          onPress={onClose}
+          style={{ padding: 12, paddingRight: 0 }}
+        >
           <Icons
             backgroundColor="transparent"
             name="close"
@@ -53,23 +57,41 @@ const Content = ({ onClose }: { onClose: () => void }) => {
       </View>
 
       <ButtonView
-        color={Colors.secondary}
-        text="upcoming events"
+        textViewProps={{
+          color: Colors.secondary,
+          text: "upcoming events",
+        }}
         onPress={() => {
           router.push(paths.root);
           onClose();
         }}
+        variant={ButtonVariant.secondary}
       />
       {token ? (
         <>
           <View style={{ height: 12 }} />
           <ButtonView
-            color={Colors.secondary}
-            text="create event"
+            textViewProps={{
+              color: Colors.secondary,
+              text: "create event",
+            }}
             onPress={() => {
               router.push(paths.createEvent);
               onClose();
             }}
+            variant={ButtonVariant.secondary}
+          />
+          <View style={{ height: 12 }} />
+          <ButtonView
+            textViewProps={{
+              color: Colors.secondary,
+              text: "my events",
+            }}
+            onPress={() => {
+              router.push(paths.myEvents);
+              onClose();
+            }}
+            variant={ButtonVariant.secondary}
           />
         </>
       ) : null}

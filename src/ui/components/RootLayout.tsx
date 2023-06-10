@@ -1,5 +1,6 @@
 import Icons from "@expo/vector-icons/MaterialIcons";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Inter_800ExtraBold, useFonts } from "@expo-google-fonts/inter";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { Slot, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
@@ -11,14 +12,12 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { RootSiblingParent } from "react-native-root-siblings";
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { AuthModal } from "./AuthModal";
-import { ButtonView } from "./ButtonView";
+import { ButtonVariant, ButtonView } from "./ButtonView";
 import { NavigationModal } from "./NavigationModal";
+import { queryClient } from "../../data/queryClient";
 import { paths } from "../../domain/paths";
 import {
   setTokenSelector,
@@ -28,22 +27,22 @@ import {
 } from "../../domain/store";
 import { Colors } from "../styleguide/Styleguide";
 
-const queryClient = new QueryClient();
-
 export const RootLayout = () => {
   const storeHydrated = useHydration();
 
-  const insets = useSafeAreaInsets();
-  const [open, setOpen] = useState(false);
+  const [fontsLoaded] = useFonts({
+    Inter_800ExtraBold,
+  });
+
   const router = useRouter();
   const token = useStore(tokenSelector);
   const setToken = useStore(setTokenSelector);
-  const { height, width } = useWindowDimensions();
+  const { height } = useWindowDimensions();
 
   const [navigationModalOpen, setNavigationModalOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
 
-  if (/*!loaded ||*/ !storeHydrated) {
+  if (!fontsLoaded || !storeHydrated) {
     return null;
   }
 
@@ -69,11 +68,15 @@ export const RootLayout = () => {
                 }}
               >
                 <ButtonView
+                  textViewProps={{
+                    text: "PolTicketeX",
+                    fontSize: 24,
+                  }}
                   onPress={() => router.push(paths.root)}
-                  text="PolTicketeX"
                 />
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <ButtonView
+                    variant={ButtonVariant.secondary}
                     onPress={() => {
                       if (token) {
                         setToken(undefined);
@@ -81,7 +84,9 @@ export const RootLayout = () => {
                         setAuthModalOpen(true);
                       }
                     }}
-                    text={token ? "logout" : "auth"}
+                    textViewProps={{
+                      text: token ? "logout" : "auth",
+                    }}
                   />
                   <View style={{ width: 12 }} />
                   <TouchableOpacity
@@ -116,11 +121,4 @@ export const RootLayout = () => {
       </QueryClientProvider>
     </RootSiblingParent>
   );
-};
-
-const text = {
-  upcomingEvents: "upcoming events",
-  createEvent: "create event",
-  login: "login",
-  logout: "logout",
 };

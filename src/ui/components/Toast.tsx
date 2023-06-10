@@ -17,4 +17,5 @@ export const showToast = (
 
 export enum Variant {
   error,
+  success,
 }

@@ -1,29 +1,27 @@
 import Icons from "@expo/vector-icons/MaterialIcons";
-import { Image } from "expo-image";
-import { useRouter } from "expo-router";
 import { useRef, useState } from "react";
 import {
   Platform,
-  Pressable,
-  Text,
   TouchableOpacity,
   View,
   useWindowDimensions,
 } from "react-native";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 
-import { paths } from "../../domain/paths";
 import { useEvents } from "../../domain/useEvents";
+import { EventItem } from "../components/EventItem";
 import { TextView } from "../components/TextView";
 import { Colors } from "../styleguide/Styleguide";
 
 export default () => {
   const { width, height } = useWindowDimensions();
   const ref = useRef<ICarouselInstance>(null);
-  const { events: items } = useEvents();
-  const router = useRouter();
+  const { events, loading } = useEvents();
   const [index, setIndex] = useState(0);
   const windowSize = 1;
+
+  if (loading) return null;
+
   return (
     <View>
       <Carousel
@@ -31,62 +29,12 @@ export default () => {
         width={width}
         height={height / 2}
         windowSize={windowSize}
-        data={items}
-        scrollAnimationDuration={1000}
+        data={events}
+        scrollAnimationDuration={Platform.OS === "web" ? 500 : 300}
         mode="parallax"
         enabled={Platform.OS !== "web"}
-        onSnapToItem={setIndex}
-        renderItem={({ index, item }) => (
-          <Pressable
-            style={{ flex: 1, width }}
-            onPress={() => {
-              router.push(paths.event(item.id));
-            }}
-          >
-            <View
-              style={{
-                justifyContent: "center",
-                backgroundColor: "#2D3748",
-                alignSelf: "center",
-                borderRadius: 8,
-                flex: 1,
-              }}
-            >
-              <Image
-                style={{
-                  width: width * maxWidth,
-                  height: 270,
-                  overflow: "hidden",
-                }}
-                contentPosition="top center"
-                source={item.image}
-                contentFit="cover"
-              />
-              <Text
-                style={{
-                  textAlign: "center",
-                  fontSize: 30,
-                  maxWidth: width * maxWidth,
-                  color: "#fff",
-                  backgroundColor: "#000",
-                }}
-              >
-                {item.title}
-              </Text>
-              <Text
-                style={{
-                  textAlign: "center",
-                  fontSize: 24,
-                  maxWidth: width * maxWidth,
-                  color: "#999",
-                  backgroundColor: "#000",
-                }}
-              >
-                {item.date}
-              </Text>
-            </View>
-          </Pressable>
-        )}
+        onSnapToItem={Platform.OS !== "web" ? setIndex : undefined}
+        renderItem={({ item }) => <EventItem item={item} />}
       />
       <View
         style={{
@@ -95,38 +43,40 @@ export default () => {
           alignSelf: "center",
         }}
       >
-        <TouchableOpacity
-          onPress={() => {
-            ref.current?.prev();
-            setIndex(index - 1 >= 0 ? index - 1 : items.length - 1);
-          }}
-          style={{ padding: 12 }}
-        >
-          <Icons
-            backgroundColor="transparent"
-            name="chevron-left"
-            size={24}
-            color={Colors.primaryText}
-          />
-        </TouchableOpacity>
-        <TextView text={`${index + 1} / ${items.length}`} />
-        <TouchableOpacity
-          onPress={() => {
-            ref.current?.next();
-            setIndex(index - 1 >= 0 ? index - 1 : items.length - 1);
-          }}
-          style={{ padding: 12 }}
-        >
-          <Icons
-            backgroundColor="transparent"
-            name="chevron-right"
-            size={24}
-            color={Colors.primaryText}
-          />
-        </TouchableOpacity>
+        {Platform.OS === "web" ? (
+          <TouchableOpacity
+            onPress={() => {
+              setIndex(index - 1 >= 0 ? index - 1 : events.length - 1);
+              ref.current?.prev();
+            }}
+            style={{ padding: 12 }}
+          >
+            <Icons
+              backgroundColor="transparent"
+              name="chevron-left"
+              size={24}
+              color={Colors.primaryText}
+            />
+          </TouchableOpacity>
+        ) : null}
+        <TextView text={`${index + 1} / ${events.length}`} />
+        {Platform.OS === "web" ? (
+          <TouchableOpacity
+            onPress={() => {
+              setIndex(index + 1 >= events.length ? 0 : index + 1);
+              ref.current?.next();
+            }}
+            style={{ padding: 12 }}
+          >
+            <Icons
+              backgroundColor="transparent"
+              name="chevron-right"
+              size={24}
+              color={Colors.primaryText}
+            />
+          </TouchableOpacity>
+        ) : null}
       </View>
     </View>
   );
 };
-
-const maxWidth = 0.8;

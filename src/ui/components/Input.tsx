@@ -26,7 +26,7 @@ export const Input = ({
         borderRadius: 12,
         padding: 4,
         paddingHorizontal: 8,
-        minWidth: 300,
+        width: 300,
       }}
       secureTextEntry={secureTextEntry}
       value={text}

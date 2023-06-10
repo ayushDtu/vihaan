@@ -32,6 +32,12 @@ export interface Event {
   event_image: string;
   /** Preview Image */
   preview_image: string;
+  /** Contract Address */
+  contract_address: string;
+  /** Ticket Quantity */
+  ticket_quantity: number;
+  /** Ticket Price */
+  ticket_price: number;
 }
 
 /** HTTPValidationError */
@@ -229,12 +235,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @name GetEventEventGet
+     * @summary Get Event
+     * @request GET:/event
+     */
+    getEventEventGet: (params: RequestParams = {}) =>
+      this.request<Event[], any>({
+        path: `/event`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @name CreateEventEventPost
      * @summary Create Event
      * @request POST:/event
      */
     createEventEventPost: (data: Event, params: RequestParams = {}) =>
-      this.request<any, HTTPValidationError>({
+      this.request<object, HTTPValidationError>({
         path: `/event`,
         method: "POST",
         body: data,
@@ -252,7 +273,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/image
      */
     createPictureImagePost: (data: BodyCreatePictureImagePost, params: RequestParams = {}) =>
-      this.request<any, HTTPValidationError>({
+      this.request<string, HTTPValidationError>({
         path: `/image`,
         method: "POST",
         body: data,
@@ -270,7 +291,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/account
      */
     creteAccountAccountPost: (data: User, params: RequestParams = {}) =>
-      this.request<any, HTTPValidationError>({
+      this.request<LoginResponse, HTTPValidationError>({
         path: `/account`,
         method: "POST",
         body: data,

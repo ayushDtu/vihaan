@@ -1,24 +1,18 @@
+import { useQuery } from "@tanstack/react-query";
+
+import { api } from "../data/api";
+import { queryKeys } from "../data/queryKeys";
 import { EventID } from "../data/types";
 
 export const useEvents = () => {
-  return { events };
+  const query = useQuery({
+    queryKey: queryKeys.events,
+    queryFn: api.event.getEventEventGet,
+  });
+  return { events: query.data ?? [], loading: query.isLoading };
 };
 
 export const useEvent = (id: EventID) => {
-  return { event: events.find((item) => item.id === id) };
+  const { events } = useEvents();
+  return { event: events.find((item) => item.contract_address === id) };
 };
-
-const events = [
-  {
-    id: "1",
-    image: "https://picsum.photos/seed/696/3000/2000",
-    title: "Plaża Mamry Węgorzewo",
-    date: "28 - 29 Czerwca",
-  },
-  {
-    id: "2",
-    image: "https://picsum.photos/seed/696/3000/2000",
-    title: "Plaża Mamry Węgorzewo",
-    date: "28 - 29 Lipca",
-  },
-];

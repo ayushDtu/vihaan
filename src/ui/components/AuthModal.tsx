@@ -4,7 +4,7 @@ import { useState } from "react";
 import { View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-import { ButtonView } from "./ButtonView";
+import { ButtonVariant, ButtonView } from "./ButtonView";
 import { Input } from "./Input";
 import { ModalView } from "./Modal";
 import { TextView } from "./TextView";
@@ -121,22 +121,29 @@ const Content = ({ onClose }: { onClose: () => void }) => {
         <View style={{ height: 16 }} />
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <ButtonView
-            color={Colors.secondary}
-            text="login"
+            textViewProps={{
+              color: Colors.secondary,
+              text: "login",
+            }}
             loading={loginMutation.isLoading}
             onPress={() => {
               loginMutation.mutate({ username, password });
             }}
+            variant={ButtonVariant.secondary}
           />
           <ButtonView
-            color={Colors.secondary}
-            text="create account"
+            textViewProps={{
+              color: Colors.secondary,
+              text: "create account",
+            }}
             loading={signupMutation.isLoading}
             onPress={() => {
               signupMutation.mutate({ username, password });
             }}
+            variant={ButtonVariant.secondary}
           />
         </View>
+        <View style={{ height: 16 }} />
       </View>
     </View>
   );
