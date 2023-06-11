@@ -20,13 +20,13 @@ export const Input = ({
   return (
     <TextInput
       style={{
-        color,
-        borderWidth: 1,
+        color: Colors.primaryText,
+        borderWidth: 0.5,
         borderColor: borderColor ?? color,
-        borderRadius: 12,
-        padding: 6,
+        borderRadius: 6,
+        padding: 12,
         paddingHorizontal: 12,
-        width: 300,
+        backgroundColor: Colors.lightGray,
       }}
       secureTextEntry={secureTextEntry}
       value={text}

@@ -52,15 +52,16 @@ export const EventItem = ({
         style={{
           justifyContent: "center",
           alignSelf: "center",
-          borderRadius: 8,
+          borderRadius: 16,
           flex: 1,
         }}
       >
         <Image
           style={{
-            width: width * maxWidth,
-            height: 270,
+            width: Platform.OS === "web" ? width * 0.7 : width * maxWidth,
+            height: 550,
             overflow: "hidden",
+            marginTop: 64,
           }}
           contentPosition="top center"
           source={item.event_image}
@@ -71,18 +72,21 @@ export const EventItem = ({
         <TextView
           text={item.name}
           textAlign="center"
-          fontSize={30}
-          backgroundColor={Colors.tertiary}
-          color={Colors.primary}
+          fontSize={32}
+          backgroundColor={Colors.darkGray}
+          color={Colors.primaryText}
           maxWidth={width * maxWidth}
+          padding={16}
         />
+
         <TextView
           text={new Date(item.start_day).toLocaleDateString()}
           textAlign="center"
           fontSize={24}
-          backgroundColor={Colors.tertiary}
-          color={Colors.primary}
+          backgroundColor={Colors.darkGray}
+          color={Colors.primaryText}
           maxWidth={width * maxWidth}
+          padding={16}
         />
       </View>
       {!navEnabled ? (
@@ -115,7 +119,7 @@ export const EventItem = ({
             loading={buyTicketMutation.isLoading}
             onPress={buyTicketMutation.mutate}
             textViewProps={{
-              text: "buy ticket",
+              text: "Buy Ticket",
             }}
           />
         </View>
@@ -123,7 +127,8 @@ export const EventItem = ({
     </Pressable>
   );
 };
-const maxWidth = 0.8;
+
+const maxWidth = 0.9;
 
 const blurhash =
   "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";

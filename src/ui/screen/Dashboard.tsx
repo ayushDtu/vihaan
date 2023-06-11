@@ -27,7 +27,7 @@ export default () => {
       <Carousel
         ref={ref}
         width={width}
-        height={height / 2}
+        height={height / 1.3}
         windowSize={windowSize}
         data={events}
         scrollAnimationDuration={Platform.OS === "web" ? 500 : 300}

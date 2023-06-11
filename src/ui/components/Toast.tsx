@@ -10,7 +10,7 @@ export const showToast = (
   Toast.show(message, {
     position: 50,
     duration: Toast.durations.LONG,
-    backgroundColor: variant === Variant.error ? Colors.red : Colors.primary,
+    backgroundColor: variant === Variant.error ? Colors.yellow : Colors.primary,
     ...options,
   });
 };

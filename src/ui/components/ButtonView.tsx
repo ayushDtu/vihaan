@@ -1,35 +1,56 @@
-import { ActivityIndicator, TouchableOpacity } from "react-native";
+import {
+  ActivityIndicator,
+  StyleProp,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native";
 
 import { TextView, TextViewProps } from "./TextView";
+import { Colors } from "../styleguide/Styleguide";
 
 export const ButtonView = ({
   onPress,
   loading,
   textViewProps,
   variant = ButtonVariant.primary,
+  style,
 }: {
   onPress: () => void;
   loading?: boolean;
   textViewProps: TextViewProps;
   variant?: ButtonVariant;
+  style?: StyleProp<ViewStyle>;
 }) => {
   return loading ? (
     <ActivityIndicator />
   ) : (
     <TouchableOpacity
       onPress={onPress}
-      style={
-        variant === ButtonVariant.secondary
+      style={[
+        style,
+        variant === ButtonVariant.primary
           ? {
-              backgroundColor: "rgba(0,0,0,0.15)",
+              backgroundColor: Colors.yellow,
               padding: 8,
               paddingHorizontal: 16,
-              borderRadius: 8,
+              borderRadius: 6,
             }
-          : undefined
-      }
+          : {
+              backgroundColor: Colors.darkGray,
+              padding: 8,
+              paddingHorizontal: 16,
+              borderRadius: 6,
+            },
+      ]}
     >
-      <TextView {...textViewProps} />
+      <TextView
+        {...textViewProps}
+        color={
+          variant === ButtonVariant.secondary
+            ? Colors.primaryText
+            : Colors.darkGray
+        }
+      />
     </TouchableOpacity>
   );
 };

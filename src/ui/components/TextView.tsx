@@ -9,6 +9,7 @@ export type TextViewProps = {
   textAlign?: "auto" | "left" | "right" | "center" | "justify" | undefined;
   maxWidth?: number;
   backgroundColor?: ColorValue | undefined;
+  padding?: number;
 };
 
 export const TextView = ({
@@ -18,6 +19,7 @@ export const TextView = ({
   textAlign,
   maxWidth,
   backgroundColor,
+  padding,
 }: TextViewProps) => {
   return (
     <Text
@@ -28,6 +30,7 @@ export const TextView = ({
         textAlign,
         maxWidth,
         backgroundColor,
+        padding,
       }}
     >
       {text}

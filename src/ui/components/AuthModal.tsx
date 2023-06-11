@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { View } from "react-native";
+import { Platform, View, useWindowDimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 import { ButtonVariant, ButtonView } from "./ButtonView";
@@ -35,6 +35,7 @@ const Content = ({ onClose }: { onClose: () => void }) => {
   const [username, setUsername] = useState("mateusz1@gmail.com");
   const [password, setPassword] = useState("admin1234");
   const setToken = useStore(setTokenSelector);
+  const { width } = useWindowDimensions();
 
   const loginMutation = useMutation({
     mutationFn: ({
@@ -87,9 +88,13 @@ const Content = ({ onClose }: { onClose: () => void }) => {
   return (
     <View
       style={{
-        minWidth: 200,
-        minHeight: 200,
-        paddingLeft: 16,
+        paddingHorizontal: 32,
+        paddingTop: 16,
+        paddingBottom: 32,
+        backgroundColor: Colors.darkGray,
+        borderRadius: 6,
+        maxWidth: 600,
+        minWidth: Platform.OS === "ios" ? 300 : width * 0.3,
       }}
     >
       <View
@@ -102,42 +107,57 @@ const Content = ({ onClose }: { onClose: () => void }) => {
         </TouchableOpacity>
       </View>
 
-      <View style={{ paddingRight: 16 }}>
-        <TextView color={Colors.secondary} text="username" />
-        <Input
-          color={Colors.secondary}
-          text={username}
-          onChangeText={setUsername}
-        />
+      <View style={{ flexDirection: "column", gap: 16 }}>
+        <View style={{ gap: 4 }}>
+          <TextView color={Colors.grayWhite} fontSize={12} text="E-mail" />
+          <Input
+            color={Colors.lightGray}
+            text={username}
+            onChangeText={setUsername}
+          />
+        </View>
+
+        <View style={{ gap: 4 }}>
+          <TextView color={Colors.grayWhite} fontSize={12} text="Password" />
+          <Input
+            color={Colors.lightGray}
+            secureTextEntry
+            text={password}
+            onChangeText={setPassword}
+          />
+        </View>
+
         <View style={{ height: 16 }} />
-        <TextView color={Colors.secondary} text="password" />
-        <Input
-          color={Colors.secondary}
-          secureTextEntry
-          text={password}
-          onChangeText={setPassword}
-        />
-        <View style={{ height: 16 }} />
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <View
+          style={{ flexDirection: "column", alignItems: "center", gap: 16 }}
+        >
           <ButtonView
+            variant={ButtonVariant.primary}
             textViewProps={{
-              color: Colors.secondary,
-              text: "login",
+              color: Colors.primary,
+              text: "Login",
             }}
             loading={loginMutation.isLoading}
             onPress={() => {
               loginMutation.mutate({ username, password });
             }}
-            variant={ButtonVariant.secondary}
+            style={{
+              minWidth: 200,
+              alignItems: "center",
+            }}
           />
           <ButtonView
             textViewProps={{
               color: Colors.secondary,
-              text: "create account",
+              text: "Create Account",
             }}
             loading={signupMutation.isLoading}
             onPress={() => {
               signupMutation.mutate({ username, password });
+            }}
+            style={{
+              minWidth: 200,
+              alignItems: "center",
             }}
             variant={ButtonVariant.secondary}
           />

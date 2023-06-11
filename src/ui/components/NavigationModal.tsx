@@ -32,10 +32,12 @@ const Content = ({ onClose }: { onClose: () => void }) => {
   return (
     <View
       style={{
-        minWidth: 200,
-        minHeight: 200,
-        paddingLeft: 16,
-        paddingRight: 16,
+        paddingHorizontal: 32,
+        paddingBottom: 32,
+        backgroundColor: Colors.darkGray,
+        borderRadius: 6,
+        maxWidth: 600,
+        minWidth: 300,
       }}
     >
       <View
@@ -54,7 +56,7 @@ const Content = ({ onClose }: { onClose: () => void }) => {
       <ButtonView
         textViewProps={{
           color: Colors.secondary,
-          text: "upcoming events",
+          text: "Upcoming Events",
         }}
         onPress={() => {
           router.push(paths.root);
@@ -68,7 +70,7 @@ const Content = ({ onClose }: { onClose: () => void }) => {
           <ButtonView
             textViewProps={{
               color: Colors.secondary,
-              text: "create event",
+              text: "Create Event",
             }}
             onPress={() => {
               router.push(paths.createEvent);

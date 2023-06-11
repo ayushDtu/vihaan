@@ -68,15 +68,16 @@ export const RootLayout = () => {
                 }}
               >
                 <ButtonView
+                  variant={ButtonVariant.secondary}
                   textViewProps={{
                     text: "PolTicketeX",
-                    fontSize: 24,
+                    fontSize: 18,
                   }}
                   onPress={() => router.push(paths.root)}
                 />
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <ButtonView
-                    variant={ButtonVariant.secondary}
+                    variant={ButtonVariant.primary}
                     onPress={() => {
                       if (token) {
                         setToken(undefined);
@@ -85,7 +86,7 @@ export const RootLayout = () => {
                       }
                     }}
                     textViewProps={{
-                      text: token ? "logout" : "auth",
+                      text: token ? "Logout" : "Login",
                     }}
                   />
                   <View style={{ width: 12 }} />
