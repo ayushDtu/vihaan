@@ -3,7 +3,7 @@ import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { Platform, Pressable, View, useWindowDimensions } from "react-native";
 
-import { ButtonView } from "./ButtonView";
+import { ButtonVariant, ButtonView } from "./ButtonView";
 import { TextView } from "./TextView";
 import { showToast } from "./Toast";
 import { api } from "../../data/api";
@@ -41,7 +41,7 @@ export const EventItem = ({
   });
 
   const ticketsQuery = useQuery({
-    queryKey: queryKeys.tickets,
+    queryKey: queryKeys.tickets(item.contract_address),
     queryFn: () =>
       api.ticket.getTicketTicketGet({
         eventContractAddress: item.contract_address,
@@ -93,7 +93,7 @@ export const EventItem = ({
           textAlign="center"
           fontSize={24}
           backgroundColor={Colors.darkGray}
-          color={Colors.primaryText}
+          color={Colors.yellow}
           maxWidth={width * maxWidth}
           padding={16}
         />
@@ -101,10 +101,10 @@ export const EventItem = ({
         {!navEnabled ? (
           <View
             style={{
-              flexDirection: "row",
-              alignSelf: "center",
+              // flexDirection: "row",
+              // alignSelf: "center",
               gap: 8,
-              margin: 8,
+              marginVertical: 8,
             }}
           >
             {(ticketsQuery.data?.length ?? 0) > 0 ? (
@@ -114,32 +114,44 @@ export const EventItem = ({
                 }}
                 textViewProps={{
                   text: "Show ticket",
+                  textAlign: "center",
                 }}
-              />
-            ) : null}
-            {Platform.OS !== "web" ? (
-              <ButtonView
-                onPress={() => {
-                  router.push(paths.scanQr(item.contract_address));
-                }}
-                textViewProps={{
-                  text: "Scan QR",
+                variant={ButtonVariant.secondary}
+                style={{
+                  padding: 16,
                 }}
               />
             ) : null}
           </View>
         ) : null}
 
-        {token ? (
-          <ButtonView
-            loading={buyTicketMutation.isLoading}
-            onPress={buyTicketMutation.mutate}
-            textViewProps={{
-              text: "Buy Ticket",
-              textAlign: "center",
-              padding: 4,
-            }}
-          />
+        {!navEnabled && token ? (
+          <View style={{ gap: 8 }}>
+            <ButtonView
+              loading={buyTicketMutation.isLoading}
+              onPress={buyTicketMutation.mutate}
+              textViewProps={{
+                text: "Buy Ticket",
+                textAlign: "center",
+                padding: 4,
+              }}
+            />
+
+            <ButtonView
+              textViewProps={{
+                color: Colors.secondary,
+                text: "Go to marketplace",
+                fontSize: 16,
+              }}
+              onPress={() => {
+                router.push(paths.marketPlace(item.contract_address));
+              }}
+              variant={ButtonVariant.secondary}
+              style={{
+                alignItems: "center",
+              }}
+            />
+          </View>
         ) : null}
       </View>
     </Pressable>

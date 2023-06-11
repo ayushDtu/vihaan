@@ -4,9 +4,10 @@ import { ScrollView, View } from "react-native";
 
 import { queryKeys } from "../../data/queryKeys";
 import { useEvent } from "../../domain/useEvents";
-import { ButtonView } from "../components/ButtonView";
+import { ButtonVariant, ButtonView } from "../components/ButtonView";
 import { TextView } from "../components/TextView";
 import { showToast } from "../components/Toast";
+import { Colors } from "../styleguide/Styleguide";
 
 export const MarketPlace = () => {
   const { id } = useLocalSearchParams();
@@ -17,20 +18,10 @@ export const MarketPlace = () => {
     queryFn: () => {
       return Promise.resolve([
         {
-          id: 1,
-          price: 10,
-        },
-        {
-          id: 2,
-          price: 20,
-        },
-        {
-          id: 3,
-          price: 30,
-        },
-        {
-          id: 4,
-          price: 40,
+          tokenId: 0,
+          price: 0,
+          selller: "0x0000000000000000000000000000000000000000",
+          isListed: false,
         },
       ]);
     },
@@ -54,29 +45,31 @@ export const MarketPlace = () => {
   return (
     <ScrollView style={{ alignSelf: "center", paddingTop: 24 }}>
       <TextView
-        fontSize={32}
+        fontSize={28}
         textAlign="center"
-        text={`Market place for event: "${event?.name ?? "Super Event"}"`}
+        text={`Market place for event \n ${event?.name ?? "Super Event"}`}
       />
       <View style={{ height: 30 }} />
       {marketPlaceQuery.data?.map((item) => {
         return (
           <View
-            key={item.id}
+            key={item.tokenId}
             style={{
               flexDirection: "row",
-              alignSelf: "center",
+              justifyContent: "space-between",
               alignItems: "center",
               marginBottom: 16,
+              gap: 32,
+              marginHorizontal: 16,
             }}
           >
-            <TextView text={`price ${item.price?.toString()}`} />
-            <View style={{ width: 30 }} />
+            <TextView text={`Price: ${item.price?.toString()}`} />
             <ButtonView
               textViewProps={{
-                text: "buy",
+                text: "Buy Ticket",
               }}
-              onPress={() => buyTicketMutation.mutate(item.id)}
+              onPress={() => buyTicketMutation.mutate(item.tokenId)}
+              variant={ButtonVariant.secondary}
             />
           </View>
         );

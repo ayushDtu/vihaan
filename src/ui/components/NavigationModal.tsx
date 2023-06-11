@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 import { ButtonVariant, ButtonView } from "./ButtonView";
@@ -69,6 +69,7 @@ const Content = ({ onClose }: { onClose: () => void }) => {
             alignItems: "center",
           }}
         />
+
         {token ? (
           <>
             <ButtonView
@@ -86,7 +87,7 @@ const Content = ({ onClose }: { onClose: () => void }) => {
                 alignItems: "center",
               }}
             />
-            <ButtonView
+            {/* <ButtonView
               textViewProps={{
                 color: Colors.secondary,
                 text: "My Events",
@@ -100,8 +101,26 @@ const Content = ({ onClose }: { onClose: () => void }) => {
               style={{
                 alignItems: "center",
               }}
-            />
+            /> */}
           </>
+        ) : null}
+
+        {Platform.OS !== "web" ? (
+          <ButtonView
+            onPress={() => {
+              router.push(paths.scanQr);
+              onClose();
+            }}
+            textViewProps={{
+              color: Colors.secondary,
+              text: "Validate Ticket",
+              fontSize: 20,
+            }}
+            variant={ButtonVariant.primary}
+            style={{
+              alignItems: "center",
+            }}
+          />
         ) : null}
       </View>
     </View>

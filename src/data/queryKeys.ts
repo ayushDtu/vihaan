@@ -1,6 +1,6 @@
 export const queryKeys = {
   events: ["events"],
-  tickets: ["tickets"],
+  tickets: (id: string) => ["tickets", id],
   marketPlace: ["marketPlace"],
 };
 // todo -> probably we need contract addresses here

@@ -214,6 +214,8 @@ export const CreateEvent = () => {
           variant={ButtonVariant.primary}
         />
       </View>
+
+      <View style={{ height: 256 }} />
     </ScrollView>
   );
 };

@@ -18,12 +18,13 @@ export const ScanQr = () => {
   const handleBarCodeScanned = ({ type, data }: any) => {
     setScanned(true);
     // todo it should validate if user got ticket
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    alert(`Ticket is valid for event\n${data}`);
   };
 
   if (hasPermission === null) {
     return <Text>Requesting for camera permission</Text>;
   }
+
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }

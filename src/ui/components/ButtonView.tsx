@@ -31,13 +31,13 @@ export const ButtonView = ({
         variant === ButtonVariant.primary
           ? {
               backgroundColor: Colors.yellow,
-              padding: 8,
+              padding: 12,
               paddingHorizontal: 16,
               borderRadius: 6,
             }
           : {
               backgroundColor: Colors.darkGray,
-              padding: 8,
+              padding: 12,
               paddingHorizontal: 16,
               borderRadius: 6,
             },
