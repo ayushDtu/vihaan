@@ -53,45 +53,57 @@ const Content = ({ onClose }: { onClose: () => void }) => {
         </TouchableOpacity>
       </View>
 
-      <ButtonView
-        textViewProps={{
-          color: Colors.secondary,
-          text: "Upcoming Events",
-        }}
-        onPress={() => {
-          router.push(paths.root);
-          onClose();
-        }}
-        variant={ButtonVariant.secondary}
-      />
-      {token ? (
-        <>
-          <View style={{ height: 12 }} />
-          <ButtonView
-            textViewProps={{
-              color: Colors.secondary,
-              text: "Create Event",
-            }}
-            onPress={() => {
-              router.push(paths.createEvent);
-              onClose();
-            }}
-            variant={ButtonVariant.secondary}
-          />
-          <View style={{ height: 12 }} />
-          <ButtonView
-            textViewProps={{
-              color: Colors.secondary,
-              text: "my events",
-            }}
-            onPress={() => {
-              router.push(paths.myEvents);
-              onClose();
-            }}
-            variant={ButtonVariant.secondary}
-          />
-        </>
-      ) : null}
+      <View style={{ gap: 16 }}>
+        <ButtonView
+          textViewProps={{
+            color: Colors.secondary,
+            text: "Upcoming Events",
+            fontSize: 20,
+          }}
+          onPress={() => {
+            router.push(paths.root);
+            onClose();
+          }}
+          variant={ButtonVariant.secondary}
+          style={{
+            alignItems: "center",
+          }}
+        />
+        {token ? (
+          <>
+            <ButtonView
+              textViewProps={{
+                color: Colors.secondary,
+                text: "Create Event",
+                fontSize: 20,
+              }}
+              onPress={() => {
+                router.push(paths.createEvent);
+                onClose();
+              }}
+              variant={ButtonVariant.secondary}
+              style={{
+                alignItems: "center",
+              }}
+            />
+            <ButtonView
+              textViewProps={{
+                color: Colors.secondary,
+                text: "My Events",
+                fontSize: 20,
+              }}
+              onPress={() => {
+                router.push(paths.myEvents);
+                onClose();
+              }}
+              variant={ButtonVariant.secondary}
+              style={{
+                alignItems: "center",
+              }}
+            />
+          </>
+        ) : null}
+      </View>
     </View>
   );
 };

@@ -3,7 +3,7 @@ import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { ScrollView, View } from "react-native";
+import { Platform, ScrollView, View } from "react-native";
 
 import { api } from "../../data/api";
 import { Event } from "../../data/generated-api";
@@ -74,62 +74,91 @@ export const CreateEvent = () => {
   useAuthGuard();
 
   return (
-    <ScrollView style={{ maxWidth: 600, alignSelf: "center" }}>
+    <ScrollView
+      style={{
+        minWidth: Platform.OS === "ios" ? 300 : 600,
+        alignSelf: "center",
+      }}
+    >
       <View style={{ height: 32 }} />
-      <TextView fontSize={24} text="create event" />
-      <View style={{ height: 24 }} />
+      <TextView fontSize={24} text="Create Event" />
+      <View style={{ height: 32 }} />
 
-      <View style={{ alignSelf: "center" }}>
+      <View style={{ gap: 24 }}>
         <ButtonView
           textViewProps={{
-            text: "cover image",
+            text: "Upload Cover Image",
+            textAlign: "center",
+            padding: 4,
           }}
           loading={uploadImageMutation.isLoading}
           onPress={pickImage}
+          variant={ButtonVariant.secondary}
         />
-      </View>
 
-      <View style={{ height: 16 }} />
-      <TextView text="event name" />
-      <Input color={Colors.primaryText} text={name} onChangeText={setName} />
-      <View style={{ height: 16 }} />
+        {image && (
+          <Image
+            source={{ uri: image }}
+            style={{ width: 200, height: 200, alignSelf: "center" }}
+          />
+        )}
 
-      <TextView text="event description" />
-      <Input
-        color={Colors.primaryText}
-        text={description}
-        onChangeText={setDescription}
-      />
-      <View style={{ height: 16 }} />
+        <View style={{ gap: 4 }}>
+          <TextView color={Colors.grayWhite} fontSize={12} text="Event Name" />
+          <Input color={Colors.lightGray} text={name} onChangeText={setName} />
+        </View>
 
-      <TextView text="event date" />
-      <Input color={Colors.primaryText} text={date} onChangeText={setDate} />
-      <View style={{ height: 16 }} />
+        <View style={{ gap: 4 }}>
+          <TextView
+            color={Colors.grayWhite}
+            fontSize={12}
+            text="Event Description"
+          />
+          <Input
+            color={Colors.lightGray}
+            text={description}
+            onChangeText={setDescription}
+          />
+        </View>
 
-      <TextView text="event time" />
-      <Input color={Colors.primaryText} text={time} onChangeText={setTime} />
-      <View style={{ height: 16 }} />
+        <View style={{ gap: 4 }}>
+          <TextView color={Colors.grayWhite} fontSize={12} text="Event Date" />
+          <Input color={Colors.lightGray} text={date} onChangeText={setDate} />
+        </View>
 
-      <TextView text="tickets quantity" />
-      <Input
-        color={Colors.primaryText}
-        text={quantity}
-        onChangeText={setQuantity}
-      />
-      <View style={{ height: 16 }} />
+        <View style={{ gap: 4 }}>
+          <TextView color={Colors.grayWhite} fontSize={12} text="Event Time" />
+          <Input color={Colors.lightGray} text={time} onChangeText={setTime} />
+        </View>
 
-      <TextView text="ticket price" />
-      <Input color={Colors.primaryText} text={price} onChangeText={setPrice} />
-      <View style={{ height: 16 }} />
+        <View style={{ flexDirection: "row", gap: 8, width: 300 }}>
+          <View style={{ gap: 4 }}>
+            <TextView
+              color={Colors.grayWhite}
+              fontSize={12}
+              text="Tickets Quantity"
+            />
+            <Input
+              color={Colors.lightGray}
+              text={quantity}
+              onChangeText={setQuantity}
+            />
+          </View>
 
-      {image && (
-        <Image
-          source={{ uri: image }}
-          style={{ width: 200, height: 200, alignSelf: "center" }}
-        />
-      )}
-      <View style={{ height: 32 }} />
-      <View style={{ alignSelf: "center" }}>
+          <View style={{ gap: 4 }}>
+            <TextView
+              color={Colors.grayWhite}
+              fontSize={12}
+              text="Ticket Price"
+            />
+            <Input
+              color={Colors.lightGray}
+              text={price}
+              onChangeText={setPrice}
+            />
+          </View>
+        </View>
+
         <ButtonView
           loading={createEventMutation.isLoading}
           onPress={() => {
@@ -177,10 +206,12 @@ export const CreateEvent = () => {
             });
           }}
           textViewProps={{
-            text: "create event",
+            text: "Create Event",
             color: Colors.tertiary,
+            textAlign: "center",
+            padding: 8,
           }}
-          variant={ButtonVariant.secondary}
+          variant={ButtonVariant.primary}
         />
       </View>
     </ScrollView>

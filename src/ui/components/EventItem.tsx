@@ -61,7 +61,6 @@ export const EventItem = ({
             width: Platform.OS === "web" ? width * 0.7 : width * maxWidth,
             height: 550,
             overflow: "hidden",
-            marginTop: 64,
           }}
           contentPosition="top center"
           source={item.event_image}
@@ -88,42 +87,43 @@ export const EventItem = ({
           maxWidth={width * maxWidth}
           padding={16}
         />
-      </View>
-      {!navEnabled ? (
-        <View style={{ flexDirection: "row", alignSelf: "center" }}>
-          <ButtonView
-            onPress={() => {
-              // todo -> should be available if I have ticket
-              router.push(paths.showQr(item.contract_address));
-            }}
-            textViewProps={{
-              text: "show qr",
-            }}
-          />
-          {Platform.OS !== "web" ? (
+
+        {!navEnabled ? (
+          <View style={{ flexDirection: "row", alignSelf: "center" }}>
             <ButtonView
               onPress={() => {
-                router.push(paths.scanQr(item.contract_address));
+                // todo -> should be available if I have ticket
+                router.push(paths.showQr(item.contract_address));
               }}
               textViewProps={{
-                text: "scan qr",
+                text: "show qr",
               }}
             />
-          ) : null}
-        </View>
-      ) : null}
-      {token ? (
-        <View style={{ alignSelf: "center" }}>
-          <View style={{ height: 16 }} />
+            {Platform.OS !== "web" ? (
+              <ButtonView
+                onPress={() => {
+                  router.push(paths.scanQr(item.contract_address));
+                }}
+                textViewProps={{
+                  text: "scan qr",
+                }}
+              />
+            ) : null}
+          </View>
+        ) : null}
+
+        {token ? (
           <ButtonView
             loading={buyTicketMutation.isLoading}
             onPress={buyTicketMutation.mutate}
             textViewProps={{
               text: "Buy Ticket",
+              textAlign: "center",
+              padding: 4,
             }}
           />
-        </View>
-      ) : null}
+        ) : null}
+      </View>
     </Pressable>
   );
 };
