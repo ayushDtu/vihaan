@@ -27,7 +27,7 @@ export const EventItem = ({
   const buyTicketMutation = useMutation({
     mutationFn: () =>
       api.ticket.buyTicketTicketPost({
-        eventContactAddress: item.contract_address,
+        eventContractAddress: item.contract_address,
         jwt_token: token!,
         privateKey: "",
         ticketQuantity: 1,
@@ -42,7 +42,11 @@ export const EventItem = ({
 
   const ticketsQuery = useQuery({
     queryKey: queryKeys.tickets,
-    queryFn: api.ticket.getTicketTicketGet,
+    queryFn: () =>
+      api.ticket.getTicketTicketGet({
+        eventContractAddress: item.contract_address,
+        jwt_token: useStore.getState().token!,
+      }),
   });
 
   return (
@@ -103,15 +107,16 @@ export const EventItem = ({
               margin: 8,
             }}
           >
-            <ButtonView
-              onPress={() => {
-                // todo -> should be available if I have ticket
-                router.push(paths.showQr(item.contract_address));
-              }}
-              textViewProps={{
-                text: "Show QR",
-              }}
-            />
+            {(ticketsQuery.data?.length ?? 0) > 0 ? (
+              <ButtonView
+                onPress={() => {
+                  router.push(paths.showQr(item.contract_address));
+                }}
+                textViewProps={{
+                  text: "Show ticket",
+                }}
+              />
+            ) : null}
             {Platform.OS !== "web" ? (
               <ButtonView
                 onPress={() => {

@@ -49,7 +49,7 @@ export const CreateEvent = () => {
       return response;
     },
     onSuccess: (data, variables) => {
-      router.push(paths.event(variables.contract_address));
+      router.push(paths.event((data as any).addres));
       showToast("Event created", Variant.success);
     },
     onError: () => {

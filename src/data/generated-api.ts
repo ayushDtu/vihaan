@@ -24,8 +24,8 @@ export interface BuyTicket {
   jwt_token: string;
   /** Ticketquantity */
   ticketQuantity: number;
-  /** Eventcontactaddress */
-  eventContactAddress: string;
+  /** Eventcontractaddress */
+  eventContractAddress: string;
   /** Privatekey */
   privateKey: string;
 }
@@ -64,14 +64,6 @@ export interface LoginResponse {
   accessToken: string;
 }
 
-/** Ticket */
-export interface Ticket {
-  /** Contract Addres Event */
-  contract_addres_event: string;
-  /** Ticket Id */
-  ticket_id: number;
-}
-
 /** User */
 export interface User {
   /** User Email */
@@ -94,6 +86,13 @@ export interface ValidationError {
   msg: string;
   /** Error Type */
   type: string;
+}
+
+export interface GetTicketTicketGetParams {
+  /** Eventcontractaddress */
+  eventContractAddress: string;
+  /** Jwt Token */
+  jwt_token: string;
 }
 
 export interface LogToAccountLoginPostParams {
@@ -263,10 +262,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @summary Get Ticket
      * @request GET:/ticket
      */
-    getTicketTicketGet: (params: RequestParams = {}) =>
-      this.request<Ticket[], any>({
+    getTicketTicketGet: (query: GetTicketTicketGetParams, params: RequestParams = {}) =>
+      this.request<any, HTTPValidationError>({
         path: `/ticket`,
         method: "GET",
+        query: query,
         format: "json",
         ...params,
       }),
