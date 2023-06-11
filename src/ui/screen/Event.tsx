@@ -13,7 +13,7 @@ export const Event = () => {
     return <TextView text="event does not exist :C" />;
   }
   return (
-    <View style={{ height: 0.6 * height }}>
+    <View style={{ height: 0.6 * height, marginVertical: 64 }}>
       <EventItem item={event} navEnabled={false} />
     </View>
   );

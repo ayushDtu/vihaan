@@ -59,7 +59,7 @@ export const EventItem = ({
         <Image
           style={{
             width: Platform.OS === "web" ? width * 0.7 : width * maxWidth,
-            height: 550,
+            height: !navEnabled ? 350 : 550,
             overflow: "hidden",
           }}
           contentPosition="top center"
@@ -71,7 +71,7 @@ export const EventItem = ({
         <TextView
           text={item.name}
           textAlign="center"
-          fontSize={32}
+          fontSize={28}
           backgroundColor={Colors.darkGray}
           color={Colors.primaryText}
           maxWidth={width * maxWidth}
@@ -89,14 +89,21 @@ export const EventItem = ({
         />
 
         {!navEnabled ? (
-          <View style={{ flexDirection: "row", alignSelf: "center" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignSelf: "center",
+              gap: 8,
+              margin: 8,
+            }}
+          >
             <ButtonView
               onPress={() => {
                 // todo -> should be available if I have ticket
                 router.push(paths.showQr(item.contract_address));
               }}
               textViewProps={{
-                text: "show qr",
+                text: "Show QR",
               }}
             />
             {Platform.OS !== "web" ? (
@@ -105,7 +112,7 @@ export const EventItem = ({
                   router.push(paths.scanQr(item.contract_address));
                 }}
                 textViewProps={{
-                  text: "scan qr",
+                  text: "Scan QR",
                 }}
               />
             ) : null}
