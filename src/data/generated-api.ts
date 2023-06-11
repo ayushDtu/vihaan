@@ -18,6 +18,16 @@ export interface BodyCreatePictureImagePost {
   second_art: File;
 }
 
+/** Buy */
+export interface Buy {
+  /** Jwt Token */
+  jwt_token: string;
+  /** Eventcontractaddress */
+  eventContractAddress: string;
+  /** Tokenid */
+  tokenId: number;
+}
+
 /** BuyTicket */
 export interface BuyTicket {
   /** Jwt Token */
@@ -64,6 +74,18 @@ export interface LoginResponse {
   accessToken: string;
 }
 
+/** Sell */
+export interface Sell {
+  /** Jwt Token */
+  jwt_token: string;
+  /** Eventcontractaddress */
+  eventContractAddress: string;
+  /** Tokenid */
+  tokenId: number;
+  /** Tokenprice */
+  tokenPrice: number;
+}
+
 /** User */
 export interface User {
   /** User Email */
@@ -100,6 +122,22 @@ export interface LogToAccountLoginPostParams {
   user_email: string;
   /** User Password */
   user_password: string;
+}
+
+export interface GetListTicketsListTicketsGetParams {
+  /** Eventcontractaddress */
+  eventContractAddress: string;
+  /** Jwt Token */
+  jwt_token: string;
+}
+
+export interface GetMarketplaceMarketplaceGetParams {
+  /** Jwt Token */
+  jwt_token: string;
+  /** Eventcontractaddress */
+  eventContractAddress: string;
+  /** Tokenid */
+  tokenId: number;
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, HeadersDefaults, ResponseType } from "axios";
@@ -254,6 +292,57 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       ...params,
     });
 
+  marketplace = {
+    /**
+     * No description
+     *
+     * @name BuyTicketMarketplaceBuyPost
+     * @summary Buy Ticket
+     * @request POST:/marketplace/buy
+     */
+    buyTicketMarketplaceBuyPost: (data: Buy, params: RequestParams = {}) =>
+      this.request<any, HTTPValidationError>({
+        path: `/marketplace/buy`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name SellTicketMarketplaceSellPost
+     * @summary Sell Ticket
+     * @request POST:/marketplace/sell
+     */
+    sellTicketMarketplaceSellPost: (data: Sell, params: RequestParams = {}) =>
+      this.request<any, HTTPValidationError>({
+        path: `/marketplace/sell`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name GetMarketplaceMarketplaceGet
+     * @summary Get Marketplace
+     * @request GET:/marketplace
+     */
+    getMarketplaceMarketplaceGet: (query: GetMarketplaceMarketplaceGetParams, params: RequestParams = {}) =>
+      this.request<any, HTTPValidationError>({
+        path: `/marketplace`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+  };
   ticket = {
     /**
      * No description
@@ -369,6 +458,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<LoginResponse, HTTPValidationError>({
         path: `/login`,
         method: "POST",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+  };
+  listTickets = {
+    /**
+     * No description
+     *
+     * @name GetListTicketsListTicketsGet
+     * @summary Get List Tickets
+     * @request GET:/list-tickets
+     */
+    getListTicketsListTicketsGet: (query: GetListTicketsListTicketsGetParams, params: RequestParams = {}) =>
+      this.request<any, HTTPValidationError>({
+        path: `/list-tickets`,
+        method: "GET",
         query: query,
         format: "json",
         ...params,
