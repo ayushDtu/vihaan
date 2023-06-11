@@ -201,7 +201,7 @@ export const CreateEvent = () => {
               name,
               preview_image: uploadImageMutation.data as string,
               contract_address: "0x0",
-              ticket_price: ticketPrice,
+              ticket_price: /*ticketPrice*/ 0,
               ticket_quantity: ticketsQuantity,
             });
           }}

@@ -1,8 +1,7 @@
 import { Api } from "./generated-api";
 import { useStore } from "../domain/store";
 
-export const baseURL = "https://web-production-c66c1.up.railway.app";
-
+export const baseURL = "http://localhost:8000";
 export const api = new Api({
   baseURL,
 });

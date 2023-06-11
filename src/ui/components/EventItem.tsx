@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { Platform, Pressable, View, useWindowDimensions } from "react-native";
@@ -8,6 +8,7 @@ import { TextView } from "./TextView";
 import { showToast } from "./Toast";
 import { api } from "../../data/api";
 import { Event } from "../../data/generated-api";
+import { queryKeys } from "../../data/queryKeys";
 import { paths } from "../../domain/paths";
 import { tokenSelector, useStore } from "../../domain/store";
 import { Colors } from "../styleguide/Styleguide";
@@ -37,6 +38,11 @@ export const EventItem = ({
     onSuccess: () => {
       showToast("Ticket bought");
     },
+  });
+
+  const ticketsQuery = useQuery({
+    queryKey: queryKeys.tickets,
+    queryFn: api.ticket.getTicketTicketGet,
   });
 
   return (

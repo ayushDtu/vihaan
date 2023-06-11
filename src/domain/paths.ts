@@ -7,4 +7,5 @@ export const paths = {
   event: (id: EventID) => `/event/${id}`,
   scanQr: (id: EventID) => `/scan-qr/${id}`,
   showQr: (id: EventID) => `/show-qr/${id}`,
+  marketPlace: (id: EventID) => `/market-place/${id}`,
 };

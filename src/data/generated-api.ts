@@ -64,6 +64,14 @@ export interface LoginResponse {
   accessToken: string;
 }
 
+/** Ticket */
+export interface Ticket {
+  /** Contract Addres Event */
+  contract_addres_event: string;
+  /** Ticket Id */
+  ticket_id: number;
+}
+
 /** User */
 export interface User {
   /** User Email */
@@ -251,12 +259,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @name GetTicketTicketGet
+     * @summary Get Ticket
+     * @request GET:/ticket
+     */
+    getTicketTicketGet: (params: RequestParams = {}) =>
+      this.request<Ticket[], any>({
+        path: `/ticket`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @name BuyTicketTicketPost
      * @summary Buy Ticket
      * @request POST:/ticket
      */
     buyTicketTicketPost: (data: BuyTicket, params: RequestParams = {}) =>
-      this.request<string, HTTPValidationError>({
+      this.request<any, HTTPValidationError>({
         path: `/ticket`,
         method: "POST",
         body: data,
