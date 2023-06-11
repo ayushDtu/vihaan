@@ -1,8 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
-import { ScrollView, View } from "react-native";
+import { ActivityIndicator, ScrollView, View } from "react-native";
 
+import { api } from "../../data/api";
 import { queryKeys } from "../../data/queryKeys";
+import { useStore } from "../../domain/store";
 import { useEvent } from "../../domain/useEvents";
 import { ButtonVariant, ButtonView } from "../components/ButtonView";
 import { TextView } from "../components/TextView";
@@ -14,16 +16,26 @@ export const MarketPlace = () => {
   const { event } = useEvent(id as string);
 
   const marketPlaceQuery = useQuery({
-    queryKey: queryKeys.marketPlace,
+    queryKey: queryKeys.marketPlace(event?.contract_address!),
+    enabled: !!event,
     queryFn: () => {
-      return Promise.resolve([
-        {
-          tokenId: 0,
-          price: 0,
-          selller: "0x0000000000000000000000000000000000000000",
-          isListed: false,
-        },
-      ]);
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+
+      const res = api.listTickets.getListTicketsListTicketsGet({
+        jwt_token: useStore.getState().token!,
+        eventContractAddress: event?.contract_address!,
+      });
+
+      return res;
+
+      // return Promise.resolve([
+      //   {
+      //     tokenId: 0,
+      //     price: 0,
+      //     selller: "0x0000000000000000000000000000000000000000",
+      //     isListed: false,
+      //   },
+      // ]);
     },
   });
 
@@ -50,6 +62,9 @@ export const MarketPlace = () => {
         text={`Market place for event \n ${event?.name ?? "Super Event"}`}
       />
       <View style={{ height: 30 }} />
+
+      {marketPlaceQuery.isLoading ? <ActivityIndicator /> : null}
+
       {marketPlaceQuery.data?.map((item) => {
         return (
           <View
@@ -63,7 +78,14 @@ export const MarketPlace = () => {
               marginHorizontal: 16,
             }}
           >
-            <TextView text={`Price: ${item.price?.toString()}`} />
+            <TextView
+              textAlign="center"
+              text={`Ticket \n${item.tokenId?.toString()}`}
+            />
+            <TextView
+              textAlign="center"
+              text={`Is available \n${item.isListed?.toString()}`}
+            />
             <ButtonView
               textViewProps={{
                 text: "Buy Ticket",

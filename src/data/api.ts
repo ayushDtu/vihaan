@@ -1,7 +1,7 @@
 import { Api } from "./generated-api";
 import { useStore } from "../domain/store";
 
-export const baseURL = "https://689c-77-78-80-244.eu.ngrok.io";
+export const baseURL = "https://1946-77-78-80-244.eu.ngrok.io";
 export const api = new Api({
   baseURL,
 });
